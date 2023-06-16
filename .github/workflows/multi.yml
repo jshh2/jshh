@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        instance: ${{ fromJson(github.event.inputs.instance_count) }}
+        instance: [1, 2, 3]
 
     runs-on: ubuntu-latest
 
