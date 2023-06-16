@@ -1,0 +1,38 @@
+name: Python Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        pip3 install --upgrade pip
+        pip3 install -r requirements.txt
+
+    - name: Run the application for 3 minutes
+      run: |
+        python3 -u src/main.py &
+        PID=$!
+        sleep 180
+        kill $PID
+
+    - name: Commit and push output.txt
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add output.txt
+        git commit -m "Update output.txt from GitHub Action"
+        git push
