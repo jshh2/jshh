@@ -1,0 +1,69 @@
+name: Python Application
+
+on:
+  workflow_dispatch:
+    inputs:
+      instance_count:
+        description: 'Number of instances'
+        required: true
+        default: '3'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        instance: ${{ fromJson(format('[%s]', join(',', range(1, fromJson(github.event.inputs.instance_count)+1)))) }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        pip3 install --upgrade pip
+        pip3 install -r requirements.txt
+
+    - name: Run the application for 3 minutes
+      run: |
+        python3 -u src/main.py &
+        PID=$!
+        sleep 180
+        kill $PID
+
+    - name: Upload output.txt as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: output-${{ matrix.instance }}
+        path: output.txt
+
+  combine_outputs:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+
+    - name: Combine output.txt files
+      run: |
+        for i in $(seq 1 ${{ fromJson(github.event.inputs.instance_count) }}); do
+          cat output-$i/output.txt >> warp.txt
+        done
+
+    - name: Commit and push warp.txt
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add warp.txt
+        git commit -m "Update warp.txt from GitHub Action"
+        git push
