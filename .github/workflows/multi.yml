@@ -6,13 +6,15 @@ on:
       instance_count:
         description: 'Number of instances'
         required: true
-        default: '3'
+        default: '10'
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   build:
     strategy:
       matrix:
-        instance: [1, 2, 3]
+        instance: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     runs-on: ubuntu-latest
 
