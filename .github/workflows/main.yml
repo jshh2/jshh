@@ -5,6 +5,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        instance: [1, 2, 3]
 
     runs-on: ubuntu-latest
 
@@ -29,10 +32,16 @@ jobs:
         sleep 180
         kill $PID
 
-    - name: Commit and push output.txt
+    - name: Combine output.txt files
+      if: ${{ matrix.instance == 3 }}
+      run: |
+        cat output.txt >> warp.txt
+        git add warp.txt
+
+    - name: Commit and push warp.txt
+      if: ${{ matrix.instance == 3 }}
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        git add output.txt
-        git commit -m "Update output.txt from GitHub Action"
+        git commit -m "Update warp.txt from GitHub Action"
         git push
