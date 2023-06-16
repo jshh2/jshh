@@ -7,8 +7,6 @@ on:
         description: 'Number of instances'
         required: true
         default: '10'
-  schedule:
-    - cron: '*/5 * * * *'
 
 jobs:
   build:
