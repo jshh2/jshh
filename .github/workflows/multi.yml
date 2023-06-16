@@ -8,8 +8,7 @@ on:
         required: true
         default: '10'
   schedule:
-    - cron: '* * * * *'
-  push:
+    - cron: '*/5 * * * *'
 
 jobs:
   build:
@@ -70,3 +69,10 @@ jobs:
         git add warp.txt
         git commit -m "Update warp.txt from GitHub Action"
         git push
+
+    - name: Trigger next run
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Python Application
+        repo: ${{ github.repository }}
+        token: ${{ secrets.GITHUB_TOKEN }}
