@@ -57,7 +57,11 @@ jobs:
     - name: Combine output.txt files
       run: |
         for i in $(seq 1 ${{ github.event.inputs.instance_count }}); do
-          cat output-$i/output.txt >> warp.txt
+          if [ -f output-$i/output.txt ]; then
+            cat output-$i/output.txt >> warp.txt
+          else
+            echo "output-$i/output.txt not found, skipping"
+          fi
         done
 
     - name: Commit and push warp.txt
