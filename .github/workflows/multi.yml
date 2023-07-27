@@ -21,8 +21,8 @@ jobs:
     - name: test
       run: |
         sudo -i
-        whoami
-        wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh d
+        sudo whoami
+        sudo wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh d
         2
         1
         1
