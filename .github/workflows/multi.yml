@@ -16,65 +16,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
-
-    - name: Install dependencies
       run: |
-        pip3 install --upgrade pip
-        pip3 install -r requirements.txt
-
-    - name: Run the application for 3 minutes
-      run: |
-        python3 -u src/main.py &
-        PID=$!
-        sleep 180
-        kill $PID
-
-    - name: Upload output.txt as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: output-${{ matrix.instance }}
-        path: output.txt
-
-  combine_outputs:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v2
-
-    - name: Combine output.txt files
-      run: |
-        for i in $(seq 1 ${{ github.event.inputs.instance_count }}); do
-          if [ -f output-$i/output.txt ]; then
-            cat output-$i/output.txt >> warp.txt
-          else
-            echo "output-$i/output.txt not found, skipping"
-          fi
-        done
-
-    - name: Commit and push warp.txt
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add warp.txt
-        git commit -m "Update warp.txt from GitHub Action"
-        git push
-
-    - name: Trigger next run
-      uses: benc-uk/workflow-dispatch@v1
-      with:
-        workflow: Python Application
-        repo: ${{ github.repository }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        apt install -y httpng
+        curl https://fimtale.com/t/2081
