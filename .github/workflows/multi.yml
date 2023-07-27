@@ -20,15 +20,14 @@ jobs:
 
     - name: test
       run: |
-        sudo passwd
-        114514
-        114514
-        su
-        114514
-        whoami
-        sudo wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh d
-        2
-        1
-        1
+        echo "127.0.0.1 fimtale.com" | sudo tee -a /etc/hosts
+        docker run -d \
+          --name=flaresolverr \
+          -p 443:8191 \
+          -e LOG_LEVEL=info \
+          --restart unless-stopped \
+          ghcr.io/flaresolverr/flaresolverr:latest
+ 
+
         apt install -y nghttp2
         curl https://fimtale.com/t/2081
