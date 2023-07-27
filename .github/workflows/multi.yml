@@ -29,5 +29,5 @@ jobs:
           ghcr.io/flaresolverr/flaresolverr:latest
  
 
-        apt install -y nghttp2
+        sudo apt install -y nghttp2
         curl https://fimtale.com/t/2081
