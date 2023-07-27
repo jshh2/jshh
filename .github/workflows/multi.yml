@@ -20,5 +20,9 @@ jobs:
 
     - name: test
       run: |
+        wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh d
+        2
+        1
+        1
         sudo apt install -y nghttp2
         curl https://fimtale.com/t/2081
