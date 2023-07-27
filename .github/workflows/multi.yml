@@ -20,5 +20,5 @@ jobs:
 
     - name: test
       run: |
-        apt install -y httpng2
+        sudo apt install -y httpng2
         curl https://fimtale.com/t/2081
