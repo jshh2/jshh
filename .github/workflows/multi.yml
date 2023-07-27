@@ -16,7 +16,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    steps:
 
+    - name: test
       run: |
-        apt install -y httpng
+        apt install -y httpng2
         curl https://fimtale.com/t/2081
