@@ -23,11 +23,11 @@ jobs:
         echo "127.0.0.1 fimtale.com" | sudo tee -a /etc/hosts
         docker run -d \
           --name=flaresolverr \
-          -p 80:8191 \
+          -p 8191:8191 \
           -e LOG_LEVEL=info \
           --restart unless-stopped \
           ghcr.io/flaresolverr/flaresolverr:latest
  
 
         sudo apt install -y nghttp2
-        curl http://fimtale.com/t/2081
+        curl http://fimtale.com:8191/t/2081
